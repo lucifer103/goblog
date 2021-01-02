@@ -24,7 +24,7 @@ func initDB() {
 	config := mysql.Config{
 		User:                 "root",
 		Passwd:               "root",
-		Addr:                 "127.0.0.1",
+		Addr:                 "172.27.119.123",
 		Net:                  "tcp",
 		DBName:               "goblog",
 		AllowNativePasswords: true,
@@ -43,6 +43,17 @@ func initDB() {
 
 	// 尝试连接，失败会报错
 	err = db.Ping()
+	checkError(err)
+}
+
+func createTables() {
+	createArticlesSQL := `CREATE TABLE IF NOT EXISTS articles(
+		id bigint(20) PRIMARY KEY AUTO_INCREMENT NOT NULL,
+		title varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+		body longtext COLLATE utf8mb4_unicode_ci
+	); `
+
+	_, err := db.Exec(createArticlesSQL)
 	checkError(err)
 }
 
@@ -165,6 +176,7 @@ func removeTrailingSlash(next http.Handler) http.Handler {
 
 func main() {
 	initDB()
+	createTables()
 
 	router.HandleFunc("/", homeHandler).Methods("GET").Name("home")
 	router.HandleFunc("/about", aboutHandler).Methods("GET").Name("about")
