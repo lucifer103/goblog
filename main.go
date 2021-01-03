@@ -155,16 +155,6 @@ type Article struct {
 	ID          int64
 }
 
-// Link 方法用来生成文章链接
-func (a Article) Link() string {
-	showURL, err := router.Get("articles.show").URL("id", strconv.FormatInt(a.ID, 10))
-	if err != nil {
-		logger.LogError(err)
-		return ""
-	}
-	return showURL.String()
-}
-
 func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
 	// 1. 获取 URL 参数
 	id := getRouteVariable("id", r)
@@ -385,7 +375,6 @@ func main() {
 	bootstrap.SetupDB()
 	router = bootstrap.SetupRoute()
 
-	router.HandleFunc("/articles", articlesIndexHandler).Methods("GET").Name("articles.index")
 	router.HandleFunc("/articles/create", articlesCreateHandler).Methods("GET").Name("articles.create")
 	router.HandleFunc("/articles", articlesStoreHandler).Methods("POST").Name("articles.store")
 	router.HandleFunc("/articles/{id:[0-9]+}/edit", articlesEditHandler).Methods("GET").Name("articles.edit")
