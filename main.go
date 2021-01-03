@@ -129,11 +129,11 @@ func articlesIndexHandler(w http.ResponseWriter, r *http.Request) {
 	checkError(err)
 
 	// 3. 加载模板
-	tmp1, err := template.ParseFiles("resources/views/articles/index.gohtml")
+	tmpl, err := template.ParseFiles("resources/views/articles/index.gohtml")
 	checkError(err)
 
 	// 4. 渲染模板，将所有文章的数据传输进去
-	tmp1.Execute(w, articles)
+	tmpl.Execute(w, articles)
 }
 
 func articlesCreateHandler(w http.ResponseWriter, r *http.Request) {
@@ -144,12 +144,12 @@ func articlesCreateHandler(w http.ResponseWriter, r *http.Request) {
 		URL:    storeURL,
 		Errors: nil,
 	}
-	tmp1, err := template.ParseFiles("resources/views/articles/create.gohtml")
+	tmpl, err := template.ParseFiles("resources/views/articles/create.gohtml")
 	if err != nil {
 		panic(err)
 	}
 
-	tmp1.Execute(w, data)
+	tmpl.Execute(w, data)
 }
 
 // ArticlesFormData 创建博文表单数据
@@ -169,7 +169,7 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 	if len(errors) == 0 {
 		lastInsertID, err := saveArticleToDB(title, body)
 		if lastInsertID > 0 {
-			fmt.Fprintf(w, "插入成功，ID 为："+strconv.FormatInt(lastInsertID, 10))
+			fmt.Fprint(w, "插入成功，ID 为: "+strconv.FormatInt(lastInsertID, 10))
 		} else {
 			checkError(err)
 			w.WriteHeader(http.StatusInternalServerError)
@@ -184,12 +184,10 @@ func articlesStoreHandler(w http.ResponseWriter, r *http.Request) {
 			URL:    storeURL,
 			Errors: errors,
 		}
-		tmp1, err := template.ParseFiles("resources/view/articles/create.gohtml")
-		if err != nil {
-			panic(err)
-		}
+		tmpl, err := template.ParseFiles("resources/views/articles/create.gohtml")
+		checkError(err)
 
-		tmp1.Execute(w, data)
+		tmpl.Execute(w, data)
 	}
 }
 
@@ -247,7 +245,7 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	} else {
 		// 4. 读取成功，显示文章
-		tmp1, err := template.New("show.gohtml").
+		tmpl, err := template.New("show.gohtml").
 			Funcs(template.FuncMap{
 				"RouteName2URL": RouteName2URL,
 				"Int64ToString": Int64ToString,
@@ -255,7 +253,7 @@ func articlesShowHandler(w http.ResponseWriter, r *http.Request) {
 			ParseFiles("resources/views/articles/show.gohtml")
 		checkError(err)
 
-		tmp1.Execute(w, article)
+		tmpl.Execute(w, article)
 	}
 }
 
@@ -287,10 +285,10 @@ func articlesEditHandler(w http.ResponseWriter, r *http.Request) {
 			URL:    updateURL,
 			Errors: nil,
 		}
-		tmp1, err := template.ParseFiles("resources/views/articles/edit.gohtml")
+		tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
 		checkError(err)
 
-		tmp1.Execute(w, data)
+		tmpl.Execute(w, data)
 	}
 }
 
@@ -349,10 +347,10 @@ func articlesUpdateHandler(w http.ResponseWriter, r *http.Request) {
 				URL:    updateURL,
 				Errors: errors,
 			}
-			tmp1, err := template.ParseFiles("resources/views/articles/edit.gohtml")
+			tmpl, err := template.ParseFiles("resources/views/articles/edit.gohtml")
 			checkError(err)
 
-			tmp1.Execute(w, data)
+			tmpl.Execute(w, data)
 		}
 	}
 }
