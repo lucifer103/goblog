@@ -382,6 +382,7 @@ func main() {
 	database.Initialize()
 	db = database.DB
 
+	bootstrap.SetupDB()
 	router = bootstrap.SetupRouter()
 
 	router.HandleFunc("/articles", articlesIndexHandler).Methods("GET").Name("articles.index")
