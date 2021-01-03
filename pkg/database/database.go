@@ -2,11 +2,10 @@ package database
 
 import (
 	"database/sql"
+	"goblog/pkg/logger"
 	"time"
 
 	"github.com/go-sql-driver/mysql"
-
-	"goblog/pkg/logger"
 )
 
 // DB 数据库对象
