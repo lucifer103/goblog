@@ -1,13 +1,8 @@
 {{define "form-fields"}}
 <div class="form-group mt-3">
   <label for="title">标题</label>
-  <input
-    type="text"
-    class="form-control {{if .Errors.title }}is-invalid {{ end }}"
-    name="title"
-    value="{{ .Title }}"
-    required
-  />
+  <input type="text" class="form-control {{if .Errors.title }}is-invalid
+  {{ end }}" name="title" value="{{ or (.Article.Title) "" }}" required />
   {{ with.Errors.title }}
   <div class="invalid-feedback">
     {{ . }}
@@ -22,7 +17,7 @@
     cols="30"
     rows="10"
     class="form-control {{if .Errors.body }}is-invalid {{ end }}"
-    >{{ .Body }}</textarea
+    >{{ or (.Article.Body) "" }}</textarea
   >
   {{ with.Errors.body }}
   <div class="invalid-feedback">
