@@ -8,13 +8,11 @@
 
   <div class="blog-post bg-white p-5 rounded shadow mb-4">
     <h3 class="blog-post-title">
-      <a href="{{ $article.Link }}" class="text-dark text-decoration-none">{{ $article.Title }}</a>
+      <a href="{{ $article.Link }}" class="text-dark text-decoration-none">{{$article.Title}}</a>
     </h3>
-    <p class="blog-post-meta text-secondary">
-      发布于 <a href="" class="font-weight-bold">2021-01-17</a> by
-      <a href="#" class="font-weight-bold">zhaiyuxin</a>
-    </p>
 
+    {{template "article-meta" $article}}
+    
     <hr />
     {{ $article.Body }}
   </div>
